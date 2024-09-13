@@ -4,17 +4,18 @@ import {useState} from "react";
 const AddWorker = () => {
     const [enteredWorkerName, setEnteredWorkerName]=useState("");
     const [enterWage, setEnterWage]=useState("");
-    const workerNameChangeHandler = (e) => {
-      setEnteredWorkerName(e.target.value);
-
-    }
-    const wageChangeHandler = (e) => {
-        setEnterWage(e.target.value);
-    }
     const addWorkerHandler = (e) => {
         e.preventDefault();
+        if (enteredWorkerName.trim().length===0 || enteredWorkerName.trim().length===0) {
+            return;
+        }
+        const minWage=5000;
+        if(+enterWage/* her defasında number olması için başına "+" */<minWage){
+            return;
+        }
+        setEnteredWorkerName("");
+        setEnterWage("");
         console.log(enteredWorkerName,enterWage);
-
 
     }
 
@@ -30,7 +31,8 @@ const AddWorker = () => {
                     className="max-w-[40rem] w-full mx-auto border p-2"
                     placeholder="Çalışan İsmi yazınız"
                     id="name"
-                    onChange={workerNameChangeHandler}
+                    onChange={(e) => setEnterWage(e.target.value)}
+                    value={enteredWorkerName}
                 />
                 <label htmlFor="wage" className="font-medium">
                    Maaş Mikatarı:
@@ -40,7 +42,8 @@ const AddWorker = () => {
                     className="max-w-[40rem] w-full mx-auto border p-2"
                     placeholder=" Maaş Mikatarı yazınız"
                     id="wage"
-                    onChange={wageChangeHandler}
+                    onChange={(e) => setEnterWage(e.target.value)}
+                    value={enterWage}
                 />
                 <Button className="mt-2 bg-blue-600" type="submit">
                     Ekle
