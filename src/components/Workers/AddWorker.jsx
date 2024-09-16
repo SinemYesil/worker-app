@@ -1,7 +1,8 @@
 import Card from "../UI/Card";
 import Button from "../UI/Button";
-import { useState } from "react";
+import  { useState, Fragment } from "react";
 import ErrorModal from "../UI/ErrorModal";
+import Wrapper from "../Helpers/Wrapper";
 
 const AddWorker = (props) => {
     const [enteredWorkerName, setEnteredWorkerName] = useState("");
@@ -53,10 +54,10 @@ const AddWorker = (props) => {
     }
 
     return (
-        <div>
-            {error && <ErrorModal onConfirm={errorHandler} error={error} />}
+        <Fragment>
+            {error && <ErrorModal key="error-modal"  onConfirm={errorHandler} error={error} />}
 
-            <Card className="mt-10">
+            <Card className="mt-10" key="card-add-worker">
                 <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
                     <label htmlFor="name" className="font-medium">
                         Çalışan İsmi:
@@ -85,8 +86,41 @@ const AddWorker = (props) => {
                     </Button>
                 </form>
             </Card>
-
-        </div>
+        </Fragment>
+        // <>
+        //     {error && <ErrorModal key="error-modal"  onConfirm={errorHandler} error={error} />}
+        //
+        //     <Card className="mt-10" key="card-add-worker">
+        //         <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
+        //             <label htmlFor="name" className="font-medium">
+        //                 Çalışan İsmi:
+        //             </label>
+        //             <input
+        //                 type="text"
+        //                 className="max-w-[40rem] w-full mx-auto border p-2"
+        //                 placeholder="Çalışan İsmi yazınız"
+        //                 id="name"
+        //                 onChange={(e) => setEnteredWorkerName(e.target.value)}
+        //                 value={enteredWorkerName}
+        //             />
+        //             <label htmlFor="wage" className="font-medium">
+        //                 Maaş Mikatarı:
+        //             </label>
+        //             <input
+        //                 type="number"
+        //                 className="max-w-[40rem] w-full mx-auto border p-2"
+        //                 placeholder="Maaş Miktarı yazınız"
+        //                 id="wage"
+        //                 onChange={(e) => setEnterWage(e.target.value)}
+        //                 value={enterWage}
+        //             />
+        //             <Button className="mt-2 bg-blue-600" type="submit">
+        //                 Ekle
+        //             </Button>
+        //         </form>
+        //     </Card>
+        //
+        // </>
     );
 };
 
