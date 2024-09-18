@@ -1,15 +1,16 @@
 import {useState} from "react";
 import AddWorker from "./components/Workers/AddWorker";
 import WorkerList from "./components/Workers/WorkerList";
+import React from "react";
 
 function App() {
     const[workers, setWorkers] = useState([]);
     return (
-        <div className="App">
+        <React.Fragment>
             <h1 className="text-center mt-6 text-3xl">Maaş Otomasyonu</h1>
             <AddWorker setWorkers={setWorkers} />
             <WorkerList workers={workers} setWorkers={setWorkers} />
-        </div>
+        </React.Fragment>
     );
 }
 
