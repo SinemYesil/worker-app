@@ -1,17 +1,21 @@
 import Card from "../UI/Card";
 import Button from "../UI/Button";
-import  { useState, Fragment } from "react";
+import  { useState, Fragment, useRef } from "react";
 import ErrorModal from "../UI/ErrorModal";
 import Wrapper from "../Helpers/Wrapper";
+
 
 const AddWorker = (props) => {
     const [enteredWorkerName, setEnteredWorkerName] = useState("");
     const [enterWage, setEnterWage] = useState("");
     const [error, setError] = useState();
+    const myForm=useRef()
 
     const minWage = 5000;
 
     const addWorkerHandler = (e) => {
+        myForm.current.className="hidden"
+        console.log(myForm);
         e.preventDefault();
 
         // Check for valid worker name and wage
@@ -58,7 +62,7 @@ const AddWorker = (props) => {
             {error && <ErrorModal key="error-modal"  onConfirm={errorHandler} error={error} />}
 
             <Card className="mt-10" key="card-add-worker">
-                <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
+                <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler} ref={myForm}>
                     <label htmlFor="name" className="font-medium">
                         Çalışan İsmi:
                     </label>
