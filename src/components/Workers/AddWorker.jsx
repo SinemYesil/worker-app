@@ -1,130 +1,113 @@
-import Card from "../UI/Card";
+import { useState, Fragment, useRef } from "react";
 import Button from "../UI/Button";
-import  { useState, Fragment, useRef } from "react";
+import Card from "../UI/Card";
 import ErrorModal from "../UI/ErrorModal";
-import Wrapper from "../Helpers/Wrapper";
-
 
 const AddWorker = (props) => {
-    const [enteredWorkerName, setEnteredWorkerName] = useState("");
-    const [enterWage, setEnterWage] = useState("");
     const [error, setError] = useState();
-    const myForm=useRef()
+    const nameInputRef = useRef();
+    const wageInputRef = useRef();
 
-    const minWage = 5000;
+    const minimumWage = 5000;
 
     const addWorkerHandler = (e) => {
-        myForm.current.className="hidden"
-        console.log(myForm);
         e.preventDefault();
 
-        // Check for valid worker name and wage
-        if (enteredWorkerName.trim().length === 0 || enterWage.trim().length === 0) {
+        const enteredName = nameInputRef.current.value;
+        const enteredWage = wageInputRef.current.value;
+        if (nameInputRef.current.value.trim().length === 0) {
             setError({
-                title:"Zorunlu Alanları Doldurunuz!",
-                message:"Lütfen bir isim ya da maaş giriniz",
-            })
+                title: "İsim Alanı Zorunludur!",
+                message: "Lütfen bir isim giriniz.",
+            });
             return;
         }
 
-        // Ensure wage is above the minimum wage
-        if (+enterWage < minWage) {
-            setError(
-                {
-                    title: "Maaş Alanı Zorunludur!",
-                    message: `Lütfen ${minWage} değerinden büyük bir maaş değeri giriniz.`,
-
-                }
-            )
+        if (+wageInputRef.current.value < minimumWage) {
+            setError({
+                title: "Maaş Alanı Zorunludur!",
+                message: `Lütfen ${minimumWage} değerinden büyük bir maaş değeri giriniz.`,
+            });
             return;
         }
-
-        // Update the worker list
         props.setWorkers((prevState) => [
             {
                 id: Math.floor(Math.random() * 1000),
-                name: enteredWorkerName,
-                wage: enterWage,
+                name: enteredName,
+                wage: enteredWage,
             },
             ...prevState,
         ]);
-
-        // Reset the input fields
-        setEnteredWorkerName("");
-        setEnterWage("");
+        nameInputRef.current.value = "";
+        wageInputRef.current.value = "";
     };
-    const errorHandler = () => {
-        setError(null)
-    }
 
+    const errorHandler = () => {
+        setError(null);
+    };
     return (
         <Fragment>
-            {error && <ErrorModal key="error-modal"  onConfirm={errorHandler} error={error} />}
-
-            <Card className="mt-10" key="card-add-worker">
-                <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler} ref={myForm}>
+            {error && <ErrorModal onConfirm={errorHandler} error={error} />}
+            <Card className="mt-10">
+                <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
                     <label htmlFor="name" className="font-medium">
-                        Çalışan İsmi:
+                        Çalışan İsmi
                     </label>
                     <input
                         type="text"
                         className="max-w-[40rem] w-full mx-auto border p-2"
-                        placeholder="Çalışan İsmi yazınız"
+                        placeholder="Çalışan ismi yazınız"
                         id="name"
-                        onChange={(e) => setEnteredWorkerName(e.target.value)}
-                        value={enteredWorkerName}
+                        ref={nameInputRef}
                     />
                     <label htmlFor="wage" className="font-medium">
-                        Maaş Mikatarı:
+                        Maaş Miktarı
                     </label>
                     <input
                         type="number"
                         className="max-w-[40rem] w-full mx-auto border p-2"
-                        placeholder="Maaş Miktarı yazınız"
+                        placeholder="Maaş miktarı yazınız"
                         id="wage"
-                        onChange={(e) => setEnterWage(e.target.value)}
-                        value={enterWage}
+                        ref={wageInputRef}
                     />
-                    <Button className="mt-2 bg-blue-600" type="submit">
+                    <Button className="mt-2" type="submit">
                         Ekle
                     </Button>
                 </form>
             </Card>
         </Fragment>
-        // <>
-        //     {error && <ErrorModal key="error-modal"  onConfirm={errorHandler} error={error} />}
-        //
-        //     <Card className="mt-10" key="card-add-worker">
-        //         <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
-        //             <label htmlFor="name" className="font-medium">
-        //                 Çalışan İsmi:
-        //             </label>
-        //             <input
-        //                 type="text"
-        //                 className="max-w-[40rem] w-full mx-auto border p-2"
-        //                 placeholder="Çalışan İsmi yazınız"
-        //                 id="name"
-        //                 onChange={(e) => setEnteredWorkerName(e.target.value)}
-        //                 value={enteredWorkerName}
-        //             />
-        //             <label htmlFor="wage" className="font-medium">
-        //                 Maaş Mikatarı:
-        //             </label>
-        //             <input
-        //                 type="number"
-        //                 className="max-w-[40rem] w-full mx-auto border p-2"
-        //                 placeholder="Maaş Miktarı yazınız"
-        //                 id="wage"
-        //                 onChange={(e) => setEnterWage(e.target.value)}
-        //                 value={enterWage}
-        //             />
-        //             <Button className="mt-2 bg-blue-600" type="submit">
-        //                 Ekle
-        //             </Button>
-        //         </form>
-        //     </Card>
-        //
-        // </>
+        /*     <>
+          {error && <ErrorModal onConfirm={errorHandler} error={error} />}
+          <Card className="mt-10">
+            <form className="flex flex-col gap-y-2" onSubmit={addWorkerHandler}>
+              <label htmlFor="name" className="font-medium">
+                Ã‡alÄ±ÅŸan Ä°smi
+              </label>
+              <input
+                type="text"
+                className="max-w-[40rem] w-full mx-auto border p-2"
+                placeholder="Ã‡alÄ±ÅŸan ismi yazÄ±nÄ±z"
+                id="name"
+                onChange={(e) => setEnteredWorkerName(e.target.value)}
+                value={enteredWorkerName}
+              />
+              <label htmlFor="wage" className="font-medium">
+                MaaÅŸ MiktarÄ±
+              </label>
+              <input
+                type="number"
+                className="max-w-[40rem] w-full mx-auto border p-2"
+                placeholder="MaaÅŸ miktarÄ± yazÄ±nÄ±z"
+                id="wage"
+                onChange={(e) => setEnteredWage(e.target.value)}
+                value={enteredWage}
+              />
+              <Button className="mt-2" type="submit">
+                Ekle
+              </Button>
+            </form>
+          </Card>
+        </> */
     );
 };
 
