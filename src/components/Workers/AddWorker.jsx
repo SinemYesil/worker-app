@@ -1,4 +1,4 @@
-import { useState, Fragment, useRef } from "react";
+import {useState, Fragment, useRef,} from "react";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import ErrorModal from "../UI/ErrorModal";
@@ -7,6 +7,8 @@ const AddWorker = (props) => {
     const [error, setError] = useState();
     const nameInputRef = useRef();
     const wageInputRef = useRef();
+
+
 
     const minimumWage = 5000;
 
